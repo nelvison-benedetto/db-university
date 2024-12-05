@@ -15,7 +15,15 @@
 SELECT * from courses;
 SELECT * from students;
 SELECT * from departments;
+SELECT * from teachers;
+SELECT * from 
 
 SELECT COUNT(*)
-FROM students AND courses
-GROUP BY courses.year
+FROM courses
+GROUP BY courses.year;
+
+SELECT COUNT(*)
+from teachers
+GROUP BY office_address;
+
+
