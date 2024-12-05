@@ -16,7 +16,8 @@ SELECT * from courses;
 SELECT * from students;
 SELECT * from departments;
 SELECT * from teachers;
-SELECT * from 
+SELECT * from exams;
+SELECT * from exam_student;
 
 SELECT COUNT(*)
 FROM courses
@@ -25,5 +26,8 @@ GROUP BY courses.year;
 SELECT COUNT(*)
 from teachers
 GROUP BY office_address;
+
+SELECT AVG(vote)
+FROM exam_student;
 
 
