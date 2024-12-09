@@ -1,5 +1,6 @@
-## SQL QUERY
-
+# SQL QUERY
+- All tables
+```sql
 SELECT * from course_teacher;
 SELECT * from courses;
 SELECT * from degrees;
@@ -8,7 +9,7 @@ SELECT * from exam_student;
 SELECT * from exams;
 SELECT * from students;
 SELECT * from teachers;
-
+```
 ## sql 04/12/2024
 
 SELECT * 
