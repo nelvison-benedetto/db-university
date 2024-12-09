@@ -1,33 +1,89 @@
-# Group by:
-#Contare quanti iscritti ci sono stati ogni anno
-#Contare gli insegnanti che hanno l'ufficio nello stesso edificio
-#Calcolare la media dei voti di ogni appello d'esame
-#Contare quanti corsi di laurea ci sono per ogni dipartimento
-# Joins:
-#Selezionare tutti gli studenti iscritti al Corso di Laurea in Economia
-#Selezionare tutti i Corsi di Laurea Magistrale del Dipartimento di Neuroscienze
-#Selezionare tutti i corsi in cui insegna Fulvio Amato (id=44)
-#Selezionare tutti gli studenti con i dati relativi al corso di laurea a cui sono iscritti e il relativo dipartimento, in ordine alfabetico per cognome e nome
-#Selezionare tutti i corsi di laurea con i relativi corsi e insegnanti
-#Selezionare tutti i docenti che insegnano nel Dipartimento di Matematica (54)
-#BONUS: Selezionare per ogni studente il numero di tentativi sostenuti per ogni esame, stampando anche il voto massimo. Successivamente, filtrare i tentativi con voto minimo 18.
 
+SELECT * from course_teacher;
 SELECT * from courses;
-SELECT * from students;
+SELECT * from degrees;
 SELECT * from departments;
-SELECT * from teachers;
-SELECT * from exams;
 SELECT * from exam_student;
+SELECT * from exams;
+SELECT * from students;
+SELECT * from teachers;
 
+#sql 04/12/2024
+
+SELECT * 
+FROM students
+WHERE date_of_birth >=  '1990-01-01' and date_of_birth< '1991-01-01';
 SELECT COUNT(*)
+FROM students
+WHERE YEAR(date_of_birth) = '1990';
+
+SELECT COUNT(*) 
+FROM courses 
+WHERE cfu > 10;
+
+SELECT COUNT(*) 
+FROM students
+WHERE TIMESTAMPDIFF (YEAR, date_of_birth, CURDATE()) > 30;
+
+SELECT COUNT(*) 
 FROM courses
-GROUP BY courses.year;
+WHERE (period = 'I semestre' AND year=1);
 
 SELECT COUNT(*)
+FROM exams
+WHERE (date = '2020-06-20' AND hour > '14:00:00');
+
+SELECT COUNT(*)
+FROM degrees
+WHERE name LIKE 'Corso di Laurea Magistrale%';
+
+SELECT DISTINCT COUNT(*)
+FROM departments;
+
+SELECT COUNT(*)
+FROM teachers
+WHERE phone IS NULL;
+
+INSERT INTO students (id, degree_id, name,surname,date_of_birth,fiscal_code,enrolment_date,registration_number,email)
+VALUES('33923','61','Nelvison','Benedetto','2000-06-15', 66666, CURDATE(),66678876,'nelvis77@gmail.xom');
+
+SELECT *
+FROM students
+WHERE name='Nelvison';
+
+SELECT * 
+FROM teachers
+WHERE (name='Pietro' AND surname='Rizzo');
+
+UPDATE teachers 
+SET office_number = 126
+WHERE (id=58 AND name='Pietro' AND surname='Rizzo');
+
+DELETE FROM students WHERE (id=33923 AND name='Nelvison' AND surname='Benedetto');
+
+
+#GROUPS BY
+
+SELECT year,COUNT(*)
+FROM courses
+GROUP BY year;
+
+SELECT office_address, COUNT(*)
 from teachers
 GROUP BY office_address;
 
-SELECT AVG(vote)
-FROM exam_student;
+SELECT exam_id, AVG(vote)
+FROM exam_student
+GROUP BY exam_id;
+
+SELECT department_id, COUNT(*)
+FROM degrees
+GROUP BY department_id;
+
+#JOINS
+
+SELECT *
+FROM degrees
+WHERE degrees.name = 'Corso di Laurea in Economia';
 
 
