@@ -1,4 +1,4 @@
-##SQL QUERY
+## SQL QUERY
 
 SELECT * from course_teacher;
 SELECT * from courses;
@@ -9,7 +9,7 @@ SELECT * from exams;
 SELECT * from students;
 SELECT * from teachers;
 
-##sql 04/12/2024
+## sql 04/12/2024
 
 SELECT * 
 FROM students
@@ -62,3 +62,102 @@ WHERE (id=58 AND name='Pietro' AND surname='Rizzo');
 
 DELETE FROM students WHERE (id=33923 AND name='Nelvison' AND surname='Benedetto');
 
+## GROUPS BY
+
+SELECT YEAR(enrolment_date),COUNT(*)
+FROM students 
+GROUP BY YEAR(enrolment_date);
+
+SELECT office_address, COUNT(*)
+from teachers
+GROUP BY office_address;
+
+SELECT exam_id, AVG(vote)
+FROM exam_student
+GROUP BY exam_id;
+
+SELECT department_id, COUNT(*)
+FROM degrees
+GROUP BY department_id;
+
+## JOINS
+
+- Selezionare tutti gli studenti iscritti al Corso di Laurea in Economia
+```sql
+SELECT students.*
+FROM degrees INNER JOIN students
+ON degrees.id = students.degree_id
+WHERE degrees.name = 'Corso di Laurea in Economia';
+```
+
+- Selezionare tutti i Corsi di Laurea Magistrale del Dipartimento di Neuroscienze
+```sql
+SELECT degrees.*
+FROM departments INNER JOIN degrees
+ON departments.id = degrees.department_id
+WHERE (departments.name='Dipartimento di Neuroscienze' AND degrees.name LIKE 'Corso di Laurea Magistrale%');
+```
+
+- Selezionare tutti i corsi in cui insegna Fulvio Amato (id=44)
+```sql
+SELECT courses.*
+FROM teachers INNER JOIN course_teacher
+ON teachers.id = course_teacher.teacher_id
+INNER JOIN courses
+ON course_teacher.course_id = courses.id
+WHERE (teachers.name='Fulvio' AND teachers.surname='Amato');
+```
+
+- Selezionare tutti gli studenti con i dati relativi al corso di laurea a cui sono iscritti e il relativo dipartimento, in ordine alfabetico per cognome e nome
+```sql
+SELECT students.*, 
+	degrees.name AS degree_name,
+    departments.name AS department_name
+FROM students INNER JOIN degrees
+ON students.degree_id = degrees.id
+INNER JOIN departments
+ON degrees.department_id = departments.id
+ORDER BY students.surname, students.name;
+```
+
+- Selezionare tutti i corsi di laurea con i relativi corsi e insegnanti
+```sql
+SELECT degrees.id AS degree_id, 
+	courses.degree_id AS course_degree_id,
+	courses.name AS course_name, 
+    teachers.name AS teacher_name,
+    teachers.surname AS teacher_surname
+FROM degrees INNER JOIN courses
+ON degrees.id = courses.degree_id
+INNER JOIN course_teacher
+ON courses.id = course_teacher.course_id
+INNER JOIN teachers
+ON course_teacher.teacher_id = teachers.id
+ORDER BY courses.degree_id;
+```
+
+- Selezionare tutti i docenti che insegnano nel Dipartimento di Matematica (54)
+```sql
+SELECT SUM(result_table2.num_copies)
+FROM
+(
+	SELECT COUNT(result_table1.count_teacher_id) AS num_copies
+	FROM  
+	(
+		SELECT departments.name, COUNT(teachers.id) AS count_teacher_id, teachers.name AS teacher_name, teachers.surname AS teacher_surname
+		FROM departments INNER JOIN degrees
+		ON departments.id = degrees.department_id
+		INNER JOIN courses 
+		ON degrees.id = courses.degree_id
+		INNER JOIN course_teacher
+		ON courses.id = course_teacher.course_id
+		INNER JOIN teachers
+		ON course_teacher.teacher_id = teachers.id
+		WHERE departments.name = 'Dipartimento di Matematica'
+		GROUP BY (teachers.id)
+	)
+	AS result_table1
+	GROUP BY (count_teacher_id)
+) 
+AS result_table2;
+```
