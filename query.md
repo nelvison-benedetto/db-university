@@ -1,3 +1,4 @@
+##SQL QUERY
 
 SELECT * from course_teacher;
 SELECT * from courses;
@@ -8,7 +9,7 @@ SELECT * from exams;
 SELECT * from students;
 SELECT * from teachers;
 
-#sql 04/12/2024
+##sql 04/12/2024
 
 SELECT * 
 FROM students
@@ -60,30 +61,4 @@ SET office_number = 126
 WHERE (id=58 AND name='Pietro' AND surname='Rizzo');
 
 DELETE FROM students WHERE (id=33923 AND name='Nelvison' AND surname='Benedetto');
-
-
-#GROUPS BY
-
-SELECT year,COUNT(*)
-FROM courses
-GROUP BY year;
-
-SELECT office_address, COUNT(*)
-from teachers
-GROUP BY office_address;
-
-SELECT exam_id, AVG(vote)
-FROM exam_student
-GROUP BY exam_id;
-
-SELECT department_id, COUNT(*)
-FROM degrees
-GROUP BY department_id;
-
-#JOINS
-
-SELECT *
-FROM degrees
-WHERE degrees.name = 'Corso di Laurea in Economia';
-
 
